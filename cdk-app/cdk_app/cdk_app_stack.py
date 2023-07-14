@@ -14,6 +14,6 @@ class CdkAppStack(Stack):
         app_config_obj = app_config.Config()
         # example resource
         queue = sqs.Queue(
-            self, "CdkAppQueue",
+            self, app_config_obj.generate_resource_name("CdkAppQueue"),
             visibility_timeout=Duration.seconds(300),
         )

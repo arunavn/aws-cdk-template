@@ -1,6 +1,6 @@
 {
-    "stackName": "",
-    "stackPrefix": "",
+    "stackName": "test-stack",
+    "stackPrefix": "test",
     "dev": {
         "accountId": "700433791282",
         "primaryRegion": "us-west-2",
