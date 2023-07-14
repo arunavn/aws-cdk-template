@@ -1,5 +1,19 @@
 {
-    "accountId": "700433791282",
-    "primaryRegion": "us-east-1",
-    "drRegion": "us-west-2"
+    "stackName": "",
+    "stackPrefix": "",
+    "dev": {
+        "accountId": "700433791282",
+        "primaryRegion": "us-west-2",
+        "drRegion": "us-west-2"
+    },
+    "staging": {
+        "accountId": "700433791282",
+        "primaryRegion": "eu-central-1",
+        "drRegion": "us-west-2"
+    },
+    "prod": {
+        "accountId": "700433791282",
+        "primaryRegion": "ap-south-1",
+        "drRegion": "us-west-2"
+    }
 }
