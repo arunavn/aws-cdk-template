@@ -3,6 +3,9 @@ run-name: Test and Deploy
 on: [push]
 jobs:
   pre-deploy-checks:
+    env:
+      DEPLOY_ENV: dev
+      REGION: eu-central-1
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -10,4 +13,49 @@ jobs:
         run: pip install -r ./cdk-app/requirements-dev.txt
       - name: Run Tests
         run: pytest .
+        working-directory: ./cdk-app/
+      - name: Run CDK Synth
+        run: cdk synth
+        working-directory: ./cdk-app/
+
+  deploy-to-dev:
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_ENV: dev
+      ACCOUNT: 700433791282
+      REGION: us-west-2
+    steps:
+      - uses: actions/checkout@master
+      - name: install dependencies
+        run: pip install -r ./cdk-app/requirements-dev.txt
+      - name: Run CDK Synth
+        run: cdk synth
+        working-directory: ./cdk-app/
+
+  deploy-to-staging:
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_ENV: staging
+      ACCOUNT: 700433791282
+      REGION: eu-central-1
+    steps:
+      - uses: actions/checkout@master
+      - name: install dependencies
+        run: pip install -r ./cdk-app/requirements-dev.txt
+      - name: Run CDK Synth
+        run: cdk synth
+        working-directory: ./cdk-app/
+
+  deploy-to-prod:
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_ENV: prod
+      ACCOUNT: 700433791282
+      REGION: ap-south-1
+    steps:
+      - uses: actions/checkout@master
+      - name: install dependencies
+        run: pip install -r ./cdk-app/requirements-dev.txt
+      - name: Run CDK Synth
+        run: cdk synth
         working-directory: ./cdk-app/
