@@ -39,7 +39,7 @@ jobs:
       - name: Install Python dependencies and CDK
         run: |
           python -m pip install --upgrade pip
-          -r ./cdk-app/requirements-dev.txt
+          pip install -r ./cdk-app/requirements-dev.txt
           npm install -g aws-cdk
       - name: Configure aws credentials
         uses: aws-actions/configure-aws-credentials@master
