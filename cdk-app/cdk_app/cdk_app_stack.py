@@ -1,19 +1,12 @@
 from aws_cdk import (
-    Duration,
-    Stack,
-    aws_sqs as sqs,
+    Stack
 )
 from constructs import Construct
 from config import app_config
+from services import sqs_service
 class CdkAppStack(Stack):
-
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
-
-        # The code that defines your stack goes here
         app_config_obj = app_config.Config()
-        # example resource
-        queue = sqs.Queue(
-            self, app_config_obj.generate_resource_name("CdkAppQueue"),
-            visibility_timeout=Duration.seconds(300),
-        )
+        sqs_service.create_test_sqs(stack= self)
+        
