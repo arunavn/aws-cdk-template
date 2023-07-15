@@ -28,17 +28,25 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
-      - uses: actions/setup-node@master
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Set up Node
+        uses: actions/setup-node@v3
         with:
           node-version: "16"
+      - name: Install Python dependencies and CDK
+        run: |
+          python -m pip install --upgrade pip
+          -r ./cdk-app/requirements-dev.txt
+          npm install -g aws-cdk
       - name: Configure aws credentials
         uses: aws-actions/configure-aws-credentials@master
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-region: 'us-west-2'
-      - name: install dependencies
-        run: pip install -r ./cdk-app/requirements-dev.txt
+          aws-region: ${{vars.DEV_REGION }}
       - name: Run CDK Synth
         run: cdk synth
         working-directory: ./cdk-app/
