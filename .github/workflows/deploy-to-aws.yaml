@@ -31,6 +31,7 @@ jobs:
           aws-region: ${{vars.DEV_REGION }}
 
   pre-deploy-checks:
+    needs: predeploy-setup
     env:
       DEPLOY_ENV: dev
       REGION: ${{vars.DEV_REGION }}
