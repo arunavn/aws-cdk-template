@@ -17,6 +17,12 @@ class Config:
     
     def deploy_region(self) -> str:
         return self.env_dict['primaryRegion'] 
+    
+    def primary_region(self) -> str:
+        return self.env_dict['primaryRegion'] 
+    
+    def dr_region(self) -> str:
+        return self.env_dict['drRegion'] 
 
     def generate_resource_name(self, resource_name) -> str:
         stack_prefix, region = self.config_dict['stackPrefix'], self.deploy_region()
