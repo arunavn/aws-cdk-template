@@ -18,7 +18,7 @@ jobs:
         working-directory: ./cdk-app/
 
   deploy-to-dev:
-    if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/dev/initial'
     needs: pre-deploy-checks
     runs-on: ubuntu-latest
     env:
