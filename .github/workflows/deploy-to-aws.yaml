@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+      - name: install dependencies
+        run: pip install -r ./cdk-app/requirements-dev.txt
       - name: Run Tests
-        run: |
-          pytest ./
-        working-directory: ./cdk-app/
+        run: pytest ./cdk-app/
