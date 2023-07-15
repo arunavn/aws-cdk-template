@@ -18,6 +18,7 @@ jobs:
         working-directory: ./cdk-app/
 
   deploy-to-dev:
+    if: github.ref == 'refs/heads/dev'
     needs: pre-deploy-checks
     runs-on: ubuntu-latest
     env:
@@ -33,6 +34,7 @@ jobs:
       #   working-directory: ./cdk-app/
 
   deploy-to-staging:
+    if: github.ref == 'refs/heads/demo'
     needs: pre-deploy-checks
     runs-on: ubuntu-latest
     env:
@@ -48,6 +50,7 @@ jobs:
       #   working-directory: ./cdk-app/
 
   deploy-to-prod:
+    if: github.ref == 'refs/heads/prod'
     needs: pre-deploy-checks
     runs-on: ubuntu-latest
     env:
