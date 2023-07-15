@@ -5,7 +5,7 @@ jobs:
   pre-deploy-checks:
     env:
       DEPLOY_ENV: dev
-      REGION: ${{ variables.DEV_REGION }}
+      REGION: ${{DEV_REGION }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -21,8 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DEPLOY_ENV: dev
-      ACCOUNT: ${{ variables.AWS_ACCESS_KEY }}
-      REGION: ${{ variables.DEV_REGION }}
+      ACCOUNT: 700433791282
+      REGION: ${{DEV_REGION }}
     steps:
       - uses: actions/checkout@master
       - name: install dependencies
