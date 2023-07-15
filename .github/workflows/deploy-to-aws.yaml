@@ -59,7 +59,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-region: ${{REGION }}
+          aws-region: ${{vars.DEV_REGION }}
       - name: Run CDK Synth
         run: cdk synth
         working-directory: ./cdk-app/
@@ -96,7 +96,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-region: ${{REGION }}
+          aws-region: ${{ vars.STAGING_REGION }}
       - name: Run CDK Synth
         run: cdk synth
         working-directory: ./cdk-app/
@@ -130,7 +130,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-region: ${{REGION }}
+          aws-region:  ${{ vars.PROD_REGION }}
       - name: Run CDK Synth
         run: cdk synth
         working-directory: ./cdk-app/
