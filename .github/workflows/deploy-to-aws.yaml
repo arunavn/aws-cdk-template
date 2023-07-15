@@ -18,7 +18,7 @@ jobs:
         working-directory: ./cdk-app/
 
   deploy-to-dev:
-    depends-on: pre-deploy-checks
+    needs: pre-deploy-checks
     runs-on: ubuntu-latest
     env:
       DEPLOY_ENV: dev
@@ -33,7 +33,7 @@ jobs:
       #   working-directory: ./cdk-app/
 
   deploy-to-staging:
-    depends-on: pre-deploy-checks
+    needs: pre-deploy-checks
     runs-on: ubuntu-latest
     env:
       DEPLOY_ENV: staging
@@ -48,7 +48,7 @@ jobs:
       #   working-directory: ./cdk-app/
 
   deploy-to-prod:
-    depends-on: pre-deploy-checks
+    needs: pre-deploy-checks
     runs-on: ubuntu-latest
     env:
       DEPLOY_ENV: prod
