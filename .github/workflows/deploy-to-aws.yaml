@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DEPLOY_ENV: dev
-      ACCOUNT: ${{ vars.ACCOUNTID }}
+      ACCOUNT: ${{ vars.ACCOUNT_ID }}
       REGION: ${{vars.DEV_REGION }}
     steps:
       - name: Checkout Repo
@@ -73,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DEPLOY_ENV: staging
-      ACCOUNT: ${{ vars.ACCOUNTID }}
+      ACCOUNT: ${{ vars.ACCOUNT_ID }}
       REGION: ${{ vars.STAGING_REGION }}
     steps:
       - name: Checkout Repo
@@ -110,7 +110,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DEPLOY_ENV: prod
-      ACCOUNT: ${{ vars.ACCOUNTID }}
+      ACCOUNT: ${{ vars.ACCOUNT_ID }}
       REGION: ${{ vars.PROD_REGION }}
     steps:
       - name: Checkout Repo
