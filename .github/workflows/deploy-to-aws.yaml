@@ -5,7 +5,7 @@ jobs:
   pre-deploy-checks:
     env:
       DEPLOY_ENV: dev
-      REGION: ${{DEV_REGION }}
+      REGION: ${{vars.DEV_REGION }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -18,11 +18,12 @@ jobs:
         working-directory: ./cdk-app/
 
   deploy-to-dev:
+    depends-on: pre-deploy-checks
     runs-on: ubuntu-latest
     env:
       DEPLOY_ENV: dev
       ACCOUNT: 700433791282
-      REGION: ${{DEV_REGION }}
+      REGION: ${{vars.DEV_REGION }}
     steps:
       - uses: actions/checkout@master
       - name: install dependencies
@@ -32,11 +33,12 @@ jobs:
       #   working-directory: ./cdk-app/
 
   deploy-to-staging:
+    depends-on: pre-deploy-checks
     runs-on: ubuntu-latest
     env:
       DEPLOY_ENV: staging
       ACCOUNT: 700433791282
-      REGION: ${{ variables.STAGING_REGION }}
+      REGION: ${{ vars.STAGING_REGION }}
     steps:
       - uses: actions/checkout@master
       - name: install dependencies
@@ -46,11 +48,12 @@ jobs:
       #   working-directory: ./cdk-app/
 
   deploy-to-prod:
+    depends-on: pre-deploy-checks
     runs-on: ubuntu-latest
     env:
       DEPLOY_ENV: prod
       ACCOUNT: 700433791282
-      REGION: ${{ variables.PROD_REGION }}
+      REGION: ${{ vars.PROD_REGION }}
     steps:
       - uses: actions/checkout@master
       - name: install dependencies
