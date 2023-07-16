@@ -30,138 +30,113 @@ jobs:
         run: cdk synth
         working-directory: ./cdk-app/
 
-  deploy_to_aws:
+  deploy-to-dev:
+    if: github.ref == 'refs/heads/dev/initial'
     needs: pre-deploy-checks
-    strategy:
-      matrix: 
-        arrays: [
-            {
-            deploy_env: "dev", accountid: "${{ vars.ACCOUNT_ID }}",
-            deploy_region: "${{vars.DEV_REGION }}", branch_ref: "refs/heads/dev/initial"
-            }
-          ]
-    # if: github.ref ==  ${{ matrix.arrays.branch_ref }}
-    name:  ${{ matrix.arrays.branch_ref }}
     runs-on: ubuntu-latest
     env:
-      DEPLOY_ENV: ${{ matrix.arrays.deploy_env }}
-      ACCOUNT: ${{ matrix.arrays.accountid }}
-      REGION: ${{ matrix.arrays.deploy_region }}
+      DEPLOY_ENV: dev
+      ACCOUNT: ${{ vars.ACCOUNT_ID }}
+      REGION: ${{vars.DEV_REGION }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Install Python dependencies and CDK
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ./cdk-app/requirements.txt
+          npm install -g aws-cdk
+      - name: Configure aws credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{vars.DEV_REGION }}
       - name: Run CDK Synth
-        run: echo $DEPLOY_ENV
+        run: cdk synth
         working-directory: ./cdk-app/
-            
-  # deploy-to-dev:
-  #   if: github.ref == 'refs/heads/dev/initial'
-  #   needs: pre-deploy-checks
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     DEPLOY_ENV: dev
-  #     ACCOUNT: ${{ vars.ACCOUNT_ID }}
-  #     REGION: ${{vars.DEV_REGION }}
-  #   steps:
-  #     - name: Checkout Repo
-  #       uses: actions/checkout@master
-  #     - name: Set up Python 3.10
-  #       uses: actions/setup-python@v4
-  #       with:
-  #         python-version: "3.10"
-  #     - name: Set up Node
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: "16"
-  #     - name: Install Python dependencies and CDK
-  #       run: |
-  #         python -m pip install --upgrade pip
-  #         pip install -r ./cdk-app/requirements.txt
-  #         npm install -g aws-cdk
-  #     - name: Configure aws credentials
-  #       uses: aws-actions/configure-aws-credentials@master
-  #       with:
-  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-  #         aws-region: ${{vars.DEV_REGION }}
-  #     - name: Run CDK Synth
-  #       run: cdk synth
-  #       working-directory: ./cdk-app/
-  #     - name: Deploy to AWS
-  #       run: cdk deploy  --require-approval=never
-  #       working-directory: ./cdk-app/  
+      - name: Deploy to AWS
+        run: cdk deploy  --require-approval=never
+        working-directory: ./cdk-app/  
 
-  # deploy-to-staging:
-  #   if: github.ref == 'refs/heads/demo'
-  #   needs: pre-deploy-checks
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     DEPLOY_ENV: staging
-  #     ACCOUNT: ${{ vars.ACCOUNT_ID }}
-  #     REGION: ${{ vars.STAGING_REGION }}
-  #   steps:
-  #     - name: Checkout Repo
-  #       uses: actions/checkout@master
-  #     - name: Set up Python 3.10
-  #       uses: actions/setup-python@v4
-  #       with:
-  #         python-version: "3.10"
-  #     - name: Set up Node
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: "16"
-  #     - name: Install Python dependencies and CDK
-  #       run: |
-  #         python -m pip install --upgrade pip
-  #         pip install -r ./cdk-app/requirements.txt
-  #         npm install -g aws-cdk
-  #     - name: Configure aws credentials
-  #       uses: aws-actions/configure-aws-credentials@master
-  #       with:
-  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-  #         aws-region: ${{ vars.STAGING_REGION }}
-  #     - name: Run CDK Synth
-  #       run: cdk synth
-  #       working-directory: ./cdk-app/
-  #     - name: Deploy to AWS
-  #       run: cdk deploy  --require-approval=never
-  #       working-directory: ./cdk-app/ 
+  deploy-to-staging:
+    if: github.ref == 'refs/heads/demo'
+    needs: pre-deploy-checks
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_ENV: staging
+      ACCOUNT: ${{ vars.ACCOUNT_ID }}
+      REGION: ${{ vars.STAGING_REGION }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Install Python dependencies and CDK
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ./cdk-app/requirements.txt
+          npm install -g aws-cdk
+      - name: Configure aws credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{ vars.STAGING_REGION }}
+      - name: Run CDK Synth
+        run: cdk synth
+        working-directory: ./cdk-app/
+      - name: Deploy to AWS
+        run: cdk deploy  --require-approval=never
+        working-directory: ./cdk-app/ 
 
-  # deploy-to-prod:
-  #   if: github.ref == 'refs/heads/prod'
-  #   needs: pre-deploy-checks
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     DEPLOY_ENV: prod
-  #     ACCOUNT: ${{ vars.ACCOUNT_ID }}
-  #     REGION: ${{ vars.PROD_REGION }}
-  #   steps:
-  #     - name: Checkout Repo
-  #       uses: actions/checkout@master
-  #     - name: Set up Python 3.10
-  #       uses: actions/setup-python@v4
-  #       with:
-  #         python-version: "3.10"
-  #     - name: Set up Node
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: "16"
-  #     - name: Install Python dependencies and CDK
-  #       run: |
-  #         python -m pip install --upgrade pip
-  #         pip install -r ./cdk-app/requirements.txt
-  #         npm install -g aws-cdk
-  #     - name: Configure aws credentials
-  #       uses: aws-actions/configure-aws-credentials@master
-  #       with:
-  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-  #         aws-region:  ${{ vars.PROD_REGION }}
-  #     - name: Run CDK Synth
-  #       run: cdk synth
-  #       working-directory: ./cdk-app/
-  #     - name: Deploy to AWS
-  #       run: cdk deploy  --require-approval=never
-  #       working-directory: ./cdk-app/ 
-
+  deploy-to-prod:
+    if: github.ref == 'refs/heads/prod'
+    needs: pre-deploy-checks
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_ENV: prod
+      ACCOUNT: ${{ vars.ACCOUNT_ID }}
+      REGION: ${{ vars.PROD_REGION }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Install Python dependencies and CDK
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ./cdk-app/requirements.txt
+          npm install -g aws-cdk
+      - name: Configure aws credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region:  ${{ vars.PROD_REGION }}
+      - name: Run CDK Synth
+        run: cdk synth
+        working-directory: ./cdk-app/
+      - name: Deploy to AWS
+        run: cdk deploy  --require-approval=never
+        working-directory: ./cdk-app/ 
