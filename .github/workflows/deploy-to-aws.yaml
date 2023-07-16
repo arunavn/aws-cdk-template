@@ -31,7 +31,6 @@ jobs:
         working-directory: ./cdk-app/
 
   deploy-to-dev:
-    if: github.ref == 'refs/heads/dev/initial'
     needs: pre-deploy-checks
     runs-on: ubuntu-latest
     strategy:
@@ -44,6 +43,7 @@ jobs:
       ACCOUNT: ${{ vars.ACCOUNT_ID }}
       REGION: ${{ matrix.array.region }}
     name:  ${{ matrix.array.name }}
+    if: github.ref == 'refs/heads/dev/initial'
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
@@ -74,7 +74,6 @@ jobs:
         working-directory: ./cdk-app/  
 
   deploy-to-staging:
-    if: github.ref == 'refs/heads/demo'
     needs: pre-deploy-checks
     runs-on: ubuntu-latest
     strategy:
@@ -87,6 +86,7 @@ jobs:
       ACCOUNT: ${{ vars.ACCOUNT_ID }}
       REGION: ${{ matrix.array.region }}
     name:  ${{ matrix.array.name }}
+    if: github.ref == 'refs/heads/demo'
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
@@ -117,7 +117,6 @@ jobs:
         working-directory: ./cdk-app/ 
 
   deploy-to-prod:
-    if: github.ref == 'refs/heads/prod'
     needs: pre-deploy-checks
     runs-on: ubuntu-latest
     strategy:
@@ -130,6 +129,7 @@ jobs:
       ACCOUNT: ${{ vars.ACCOUNT_ID }}
       REGION: ${{ matrix.array.region }}
     name:  ${{ matrix.array.name }}
+    if: github.ref == 'refs/heads/prod'
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
