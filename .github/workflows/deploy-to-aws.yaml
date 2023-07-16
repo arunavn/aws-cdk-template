@@ -31,27 +31,27 @@ jobs:
         working-directory: ./cdk-app/
 
   deploy_to_aws:
-      needs: pre-deploy-checks
-      strategy:
-        matrix: 
-          arrays: [
-              {
-              deploy_env: "dev", accountid: "${{ vars.ACCOUNT_ID }}",
-              deploy_region: "${{vars.DEV_REGION }}", branch_ref: "refs/heads/dev/initial"
-              }
-            ]
-      if: github.ref ==  ${{ matrix.arrays.branch_ref }}
-      runs-on: ubuntu-latest
-      env:
-        DEPLOY_ENV: ${{ matrix.arrays.deploy_env }}
-        ACCOUNT: ${{ matrix.arrays.accountid }}
-        REGION: ${{ matrix.arrays.deploy_region }}
-      steps:
-        - name: Checkout Repo
-          uses: actions/checkout@master
-        - name: Run CDK Synth
-          run: echo $DEPLOY_ENV
-          working-directory: ./cdk-app/
+    needs: pre-deploy-checks
+    strategy:
+      matrix: 
+        arrays: [
+            {
+            deploy_env: "dev", accountid: "${{ vars.ACCOUNT_ID }}",
+            deploy_region: "${{vars.DEV_REGION }}", branch_ref: "refs/heads/dev/initial"
+            }
+          ]
+    if: github.ref ==  ${{ matrix.arrays.branch_ref }}
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_ENV: ${{ matrix.arrays.deploy_env }}
+      ACCOUNT: ${{ matrix.arrays.accountid }}
+      REGION: ${{ matrix.arrays.deploy_region }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+      - name: Run CDK Synth
+        run: echo $DEPLOY_ENV
+        working-directory: ./cdk-app/
             
   # deploy-to-dev:
   #   if: github.ref == 'refs/heads/dev/initial'
