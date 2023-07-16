@@ -65,7 +65,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-region: ${{vars.DEV_REGION }}
+          aws-region: ${{ matrix.array.region }}
       - name: Run CDK Synth
         run: cdk synth
         working-directory: ./cdk-app/
@@ -77,11 +77,16 @@ jobs:
     if: github.ref == 'refs/heads/demo'
     needs: pre-deploy-checks
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        array: [
+          {name: "deploy to staging primary", region: "${{ vars.STAGING_REGION }}" }
+        ]
     env:
       DEPLOY_ENV: staging
       ACCOUNT: ${{ vars.ACCOUNT_ID }}
-      REGION: ${{ vars.STAGING_REGION }}
-    steps:
+      REGION: ${{ matrix.array.region }}
+    name:  ${{ matrix.array.name }}
       - name: Checkout Repo
         uses: actions/checkout@master
       - name: Set up Python 3.10
@@ -102,7 +107,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-region: ${{ vars.STAGING_REGION }}
+          aws-region: ${{ matrix.array.region }}
       - name: Run CDK Synth
         run: cdk synth
         working-directory: ./cdk-app/
@@ -114,10 +119,16 @@ jobs:
     if: github.ref == 'refs/heads/prod'
     needs: pre-deploy-checks
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        array: [
+          {name: "deploy to prod primary", region: "${{ vars.PROD_REGION }}" }
+        ]
     env:
       DEPLOY_ENV: prod
       ACCOUNT: ${{ vars.ACCOUNT_ID }}
-      REGION: ${{ vars.PROD_REGION }}
+      REGION: ${{ matrix.array.region }}
+    name:  ${{ matrix.array.name }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
@@ -139,7 +150,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-region:  ${{ vars.PROD_REGION }}
+          aws-region:  ${{ matrix.array.region }}
       - name: Run CDK Synth
         run: cdk synth
         working-directory: ./cdk-app/
