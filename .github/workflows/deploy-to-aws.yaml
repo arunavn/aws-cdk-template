@@ -37,7 +37,7 @@ jobs:
     strategy:
       matrix:
         array: [
-          {name: "deploy to dev primary", region: ${{vars.DEV_REGION }}}
+          {name: "deploy to dev primary", region: "${{vars.DEV_REGION }}" }
         ]
     env:
       DEPLOY_ENV: dev
