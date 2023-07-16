@@ -6,6 +6,7 @@ jobs:
     env:
       DEPLOY_ENV: dev
       REGION: ${{vars.DEV_REGION }}
+      ACCOUNT: ${{ vars.ACCOUNT_ID }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
