@@ -34,10 +34,16 @@ jobs:
     if: github.ref == 'refs/heads/dev/initial'
     needs: pre-deploy-checks
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        array: [
+          {name: "deploy to dev primary" region: ${{vars.DEV_REGION }}}
+        ]
     env:
       DEPLOY_ENV: dev
       ACCOUNT: ${{ vars.ACCOUNT_ID }}
-      REGION: ${{vars.DEV_REGION }}
+      REGION: ${{ matrix.array.region }}
+    name:  ${{ matrix.array.name }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
