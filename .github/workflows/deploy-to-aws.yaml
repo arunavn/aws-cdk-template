@@ -44,7 +44,7 @@ jobs:
       ACCOUNT: ${{ vars.ACCOUNT_ID }}
       REGION: ${{ matrix.array.region }}
     name:  ${{ matrix.array.name }}
-    if: github.ref == 'refs/heads/dev/initial'
+    if: github.ref == 'refs/heads/dev'
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
