@@ -36,9 +36,8 @@ jobs:
         matrix: 
           arrays: [
               {
-              deploy_env: "dev", accountid: "${{ vars.ACCOUNT_ID }}", deploy_region: "${{vars.DEV_REGION }}",
-              branch_ref: "refs/heads/dev/initial", secret_key: "${{ secrets.AWS_SECRET_KEY }}",
-              access_key:  "${{ secrets.AWS_ACCESS_KEY }}"
+              deploy_env: "dev", accountid: "${{ vars.ACCOUNT_ID }}",
+              deploy_region: "${{vars.DEV_REGION }}", branch_ref: "refs/heads/dev/initial"
               }
             ]
       if: github.ref ==  ${{ matrix.arrays.branch_ref }}
