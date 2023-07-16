@@ -24,8 +24,8 @@ jobs:
           npm install -g aws-cdk
       - name: Run Tests
         run: |
-          pytest .
-        working-directory: ./cdk-app/
+          tox -c . --root cdk-app
+        working-directory: ./
       - name: Run CDK Synth
         run: cdk synth
         working-directory: ./cdk-app/
