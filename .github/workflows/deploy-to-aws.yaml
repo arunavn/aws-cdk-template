@@ -22,7 +22,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r ./cdk-app/requirements-dev.txt
           npm install -g aws-cdk
-      - name: Run Tests
+      - name: Run tox
         run: |
           tox -c . --root cdk-app
         working-directory: ./
