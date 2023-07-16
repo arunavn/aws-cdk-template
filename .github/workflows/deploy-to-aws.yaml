@@ -33,8 +33,6 @@ jobs:
   deploy-to-dev:
     needs: pre-deploy-checks
     runs-on: ubuntu-latest
-    environment: 
-      name: prod-env
     strategy:
       matrix:
         array: [
@@ -121,6 +119,8 @@ jobs:
   deploy-to-prod:
     needs: pre-deploy-checks
     runs-on: ubuntu-latest
+    environment: 
+      name: prod-env
     strategy:
       matrix:
         array: [
