@@ -40,7 +40,6 @@ jobs:
             deploy_region: "${{vars.DEV_REGION }}", branch_ref: "refs/heads/dev/initial"
             }
           ]
-    if: github.ref ==  ${{ matrix.arrays.branch_ref }}
     runs-on: ubuntu-latest
     env:
       DEPLOY_ENV: ${{ matrix.arrays.deploy_env }}
