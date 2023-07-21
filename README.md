@@ -6,7 +6,7 @@ This is an CDK template repo that can be leveraged to deploy infra to aws.
 - Add the following GitHub Actions secrets for your repository(Settings > Security > Secrets and Variables > Actions > Secrets)
   - ![Secrets](.github/images/secrets.jpg)
 - Add the following GitHub Actions secrets for your repository(Settings > Security > Secrets and Variables > Actions > Variables)
-  - ![Secrets](.github/images/variable.jpg)
+  - ![Secrets](.github/images/variables.jpg)
 - Add brach protection rules for dev, demo, and prod branches, so that the changes don't get deployed accidentally(Optional)
 
 ## Adding resources
